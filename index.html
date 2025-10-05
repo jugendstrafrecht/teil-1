@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spezial: Das Jugendstrafrecht (JGG) einfach erklärt (Responsive)</title>
+    <style>
+        /* ---------------------------------------------------------------------- */
+        /* BASIS-STILE & MOBILE FIRST (FÜR KLEINE BILDSCHIRME) */
+        /* ---------------------------------------------------------------------- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 15px; /* Weniger Rand auf Mobilgeräten */
+            line-height: 1.6;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px; /* Weniger Padding auf Mobilgeräten */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.5s, box-shadow 0.5s;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 3px solid;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        h2 {
+            margin-top: 25px;
+            padding-top: 5px;
+            border-bottom: 1px solid;
+            font-size: 1.4em;
+        }
+        h3 {
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            display: block;
+            overflow-x: auto;
+        }
+        th, td {
+            border: 1px solid;
+            padding: 10px;
+            text-align: left;
+            white-space: nowrap;
+        }
+        .jgg-focus {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 5px solid;
+        }
+        .step-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .step-list li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .step-list li:before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+        }
+        .mode-toggle {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            padding: 8px 12px;
+            cursor: pointer;
+            border: 1px solid;
+            border-radius: 6px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+
+        /* ---------------------------------------------------------------------- */
+        /* POP-UP STILE */
+        /* ---------------------------------------------------------------------- */
+        #notificationPopup {
+            display: none; /* Standardmäßig versteckt */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000; /* Muss über allem sein */
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+            max-width: 350px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+        #notificationPopup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            line-height: 1;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+
+        /* ---------------------------------------------------------------------- */
+        /* HELLER MODUS (STANDARD) - DEFINITION DER FARBEN */
+        /* ---------------------------------------------------------------------- */
+        body.light-mode {
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container.light-mode {
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .light-mode h1 {
+            color: #00796b;
+            border-bottom-color: #00acc1;
+        }
+        .light-mode h2 {
+            color: #388e3c;
+            border-bottom-color: #a5d6a7;
+        }
+        /* POP-UP Farben im Light Mode */
+        .light-mode #notificationPopup {
+            background-color: #e0f7fa; /* Helles Cyan */
+            border: 3px solid #00bcd4;
+            color: #006064;
+        }
+        .light-mode .close-btn {
+            color: #006064;
+        }
+        /* (Restliche Light Mode Farben wie zuvor) */
+        .light-mode h3 { color: #555; }
+        .light-mode th { background-color: #e0f2f1; color: #004d40; border-color: #ddd; }
+        .light-mode td { border-color: #ddd; }
+        .light-mode tr:nth-child(even) { background-color: #f9f9f9; }
+        .light-mode .jgg-focus { background-color: #f0f4c3; border-left-color: #cddc39; }
+        .light-mode .jgg-focus strong { color: #388e3c; }
+        .light-mode .mode-toggle { background-color: #eee; color: #333; border-color: #ccc; }
+
+        /* ---------------------------------------------------------------------- */
+        /* DUNKLER MODUS (DARK MODE) - DEFINITION DER FARBEN */
+        /* ---------------------------------------------------------------------- */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .container.dark-mode {
+            background: #1e1e1e;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        .dark-mode h1 {
+            color: #4db6ac;
+            border-bottom-color: #26a69a;
+        }
+        .dark-mode h2 {
+            color: #81c784;
+            border-bottom-color: #4caf50;
+        }
+        /* POP-UP Farben im Dark Mode */
+        .dark-mode #notificationPopup {
+            background-color: #263238; /* Dunkles Blau-Grau */
+            border: 3px solid #00bcd4;
+            color: #e0f7fa;
+        }
+        .dark-mode .close-btn {
+            color: #e0f7fa;
+        }
+        /* (Restliche Dark Mode Farben wie zuvor) */
+        .dark-mode h3 { color: #bdbdbd; }
+        .dark-mode th { background-color: #2c2c2c; color: #fff; border-color: #444; }
+        .dark-mode td { border-color: #444; }
+        .dark-mode tr:nth-child(even) { background-color: #242424; }
+        .dark-mode .jgg-focus { background-color: #28281a; border-left-color: #aed581; }
+        .dark-mode .jgg-focus strong { color: #81c784; }
+        .dark-mode .mode-toggle { background-color: #333; color: #fff; border-color: #555; }
+
+        /* ---------------------------------------------------------------------- */
+        /* MEDIA QUERY (ANPASSUNG FÜR GRÖSSERE BILDSCHIRME/DESKTOP) */
+        /* ---------------------------------------------------------------------- */
+        @media (min-width: 768px) {
+            body { margin: 40px; }
+            .container { padding: 35px; border-radius: 15px; }
+            h1 { font-size: 2.2em; border-bottom: 4px solid; }
+            h2 { font-size: 1.6em; margin-top: 35px; border-bottom: 2px solid; }
+            h3 { font-size: 1.2em; }
+            th, td { white-space: normal; }
+            table { display: table; overflow-x: visible; }
+            .mode-toggle { top: 20px; left: 20px; padding: 10px 15px; }
+        }
+    </style>
+</head>
+
+<body class="light-mode">
+
+    <button class="mode-toggle" id="modeToggle">🌙 Dunkler Modus</button>
+
+    <div id="notificationPopup" class="light-mode">
+        <span class="close-btn" onclick="closePopup()">&times;</span>
+        <h3>🚨 Update-Hinweis</h3>
+        <p>Bald folgen **Teil 2** (Allgemeines Strafrecht) und **Teil 3** (Wichtige Straftaten) des Lernbuchs!</p>
+        <p style="font-size: 0.9em; margin-top: 15px;">Bleiben Sie gespannt!</p>
+    </div>
+
+    <div class="container light-mode" id="contentContainer">
+
+        <h1>⭐ Teil 1: Das Jugendstrafrecht (JGG)</h1>
+
+        <div class="jgg-focus">
+            <h3>Worum geht es beim JGG?</h3>
+            <p>Das JGG (Jugendgerichtsgesetz) ist ein Spezialgesetz. Es erkennt an, dass junge Menschen sich noch entwickeln und Fehler machen. Deshalb steht hier nicht die harte Bestrafung im Vordergrund, sondern der <strong>Erziehungsgedanke</strong>.</p>
+            <p><strong>Ziel:</strong> Helfen, damit der Jugendliche in Zukunft keine Straftaten mehr begeht (Besserung), und ihn nicht unnötig für sein späteres Leben belasten.</p>
+        </div>
+
+        <h2>1. Der Anwendungsbereich: Alter zählt!</h2>
+        <p>Das Alter <strong>zum Zeitpunkt der Tat</strong> entscheidet, welches Gesetz angewandt wird.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Alter</th>
+                    <th>Bezeichnung im JGG</th>
+                    <th>Strafmündigkeit</th>
+                    <th>Wichtige Folge</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>unter 14 Jahre</strong></td>
+                    <td>Kind</td>
+                    <td><strong>Nicht strafmündig.</strong></td>
+                    <td>Keine Strafe. Die Polizei übergibt den Fall ans Jugendamt.</td>
+                </tr>
+                <tr>
+                    <td><strong>14 bis unter 18 Jahre</strong></td>
+                    <td>Jugendlicher</td>
+                    <td>Strafmündig, <strong>wenn reif genug.</strong></td>
+                    <td>Es wird immer das <strong>JGG</strong> angewandt. Der Richter prüft, ob die Einsichtsfähigkeit da war.</td>
+                </tr>
+                <tr>
+                    <td><strong>18 bis unter 21 Jahre</strong></td>
+                    <td>Heranwachsender</td>
+                    <td>Strafmündig.</td>
+                    <td>Der Richter entscheidet: War er in seiner Entwicklung noch wie ein Jugendlicher (→ JGG) oder schon wie ein Erwachsener (→ StGB)?</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>2. Die Reaktionen: Erziehung vor Strafe</h2>
+        <p>Das JGG hat spezielle Maßnahmen, die den jungen Menschen erziehen und nicht einfach nur wegsperren sollen. Diese werden in drei Stufen härter:</p>
+
+        <h3>I. Erziehungsmaßregeln (Die mildesten Reaktionen)</h3>
+        <p>Diese sollen den Jugendlichen zu einem besseren Verhalten anleiten, ohne harte Strafen.</p>
+        <ul class="step-list">
+            <li><strong>Weisungen:</strong> Das Gericht macht Vorgaben (z.B. Entschuldigung beim Opfer, Teilnahme an einem Anti-Gewalt-Training).</li>
+            <li><strong>Täter-Opfer-Ausgleich:</strong> Der Jugendliche und das Opfer reden über die Tat und versuchen, den Schaden wiedergutzumachen.</li>
+            <li><strong>Betreuungsweisung:</strong> Ein Helfer (Sozialarbeiter) steht dem Jugendlichen zur Seite und unterstützt ihn.</li>
+        </ul>
+
+        <h3>II. Zuchtmittel (Wenn Erziehungsmaßregeln nicht mehr reichen)</h3>
+        <p>Diese sind schärfer und zeigen, dass das Gericht die Tat ernster nimmt. Sie sollen den Jugendlichen "zur Zucht" rufen.</p>
+        <ul class="step-list">
+            <li><strong>Auflagen:</strong> Der Jugendliche muss etwas Konkretes tun, z.B. <strong>gemeinnützige Arbeit</strong> leisten (Sozialstunden) oder eine <strong>Geldzahlung</strong> an eine Hilfsorganisation leisten.</li>
+            <li><strong>Jugendarrest:</strong> Ein kurzer Freiheitsentzug (maximal 4 Wochen). Das ist keine "Jugendstrafe", sondern soll ein "Denkzettel" sein. Man soll in Ruhe über seine Taten nachdenken.</li>
+        </ul>
+
+        <h3>III. Jugendstrafe (Die härteste Folge)</h3>
+        <p>Die Jugendstrafe (Haft) wird nur verhängt, wenn wirklich nichts anderes mehr hilft. Das Gericht muss dafür feststellen, dass:</p>
+        <ul class="step-list">
+            <li>Der Jugendliche <strong>schwere Schuld</strong> hat (z.B. bei Mord oder schwerem Raub).</li>
+            <li>Oder er <strong>schädliche Neigungen</strong> zeigt (er macht ständig weiter mit den Straftaten und braucht eine längere Einwirkung).</li>
+        </ul>
+        <p class="tip">Die Jugendstrafe ist meist milder als die Strafe für Erwachsene. Das Höchstmaß beträgt 10 Jahre (normalerweise 5 Jahre).</p>
+
+        <h2>3. Das Verfahren: Wer entscheidet?</h2>
+        <p>Ein Jugendstrafverfahren läuft anders ab als bei Erwachsenen. Es sind spezielle Personen beteiligt:</p>
+
+        <dl>
+            <dt><strong>Der Jugendrichter:</strong></dt>
+            <dd>Muss "erzieherisch befähigt" sein. Er soll nicht nur bestrafen, sondern auch eine Ahnung von der Erziehung und Entwicklung junger Menschen haben.</dd>
+
+            <dt><strong>Die Jugendgerichtshilfe (JGH):</strong></dt>
+            <dd>Der wichtigste Unterschied zum Erwachsenenstrafrecht. Die JGH (vom Jugendamt) kommt vor der Verhandlung auf den Jugendlichen zu und spricht mit ihm über sein Leben, die Schule, Familie und Hobbys.</dd>
+
+            <dt><strong>Rolle der JGH im Gericht:</strong></dt>
+            <dd>Die JGH gibt dem Richter einen <strong>Bericht</strong> über die Persönlichkeit des Jugendlichen und macht einen <strong>Vorschlag</strong>, welche erzieherische Maßnahme am besten passen würde. Der Richter hört sich diesen Vorschlag immer an.</dd>
+        </dl>
+
+        <p style="margin-top: 40px; text-align: center; color: #7f8c8d;">Das Jugendstrafrecht ist ein Schutz für junge Menschen. Es gibt ihnen eine zweite Chance, anstatt sie nur zu bestrafen.</p>
+
+    </div>
+
+    <script>
+        const modeToggle = document.getElementById('modeToggle');
+        const body = document.body;
+        const container = document.getElementById('contentContainer');
+        const popup = document.getElementById('notificationPopup');
+
+        // --- DARK/LIGHT MODE LOGIK ---
+        function toggleMode() {
+            const isLight = body.classList.contains('light-mode');
+            const newMode = isLight ? 'dark' : 'light';
+
+            body.classList.toggle('light-mode', !isLight);
+            body.classList.toggle('dark-mode', !isLight);
+            container.classList.toggle('light-mode', !isLight);
+            container.classList.toggle('dark-mode', !isLight);
+            popup.classList.toggle('light-mode', !isLight);
+            popup.classList.toggle('dark-mode', !isLight);
+
+            modeToggle.textContent = isLight ? '☀️ Heller Modus' : '🌙 Dunkler Modus';
+            localStorage.setItem('mode', newMode);
+        }
+
+        modeToggle.addEventListener('click', toggleMode);
+
+        // Laden des gespeicherten Modus
+        const savedMode = localStorage.getItem('mode');
+        if (savedMode === 'dark') {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            container.classList.remove('light-mode');
+            container.classList.add('dark-mode');
+            popup.classList.remove('light-mode');
+            popup.classList.add('dark-mode');
+            modeToggle.textContent = '☀️ Heller Modus';
+        } else {
+             // Standard: Light Mode
+            body.classList.add('light-mode');
+            container.classList.add('light-mode');
+            popup.classList.add('light-mode');
+        }
+
+
+        // --- POP-UP LOGIK ---
+        function closePopup() {
+            popup.style.display = 'none';
+            // Speichern, dass der Nutzer das Pop-up gesehen hat
+            localStorage.setItem('popupSeen', 'true');
+        }
+
+        // Pop-up anzeigen, wenn es noch nicht geschlossen wurde
+        window.onload = function() {
+            const popupSeen = localStorage.getItem('popupSeen');
+            if (popupSeen !== 'true') {
+                popup.style.display = 'block';
+            }
+        };
+
+        // Damit die Close-Funktion direkt aus dem HTML aufgerufen werden kann
+        window.closePopup = closePopup;
+    </script>
+
+</body>
+</html>
